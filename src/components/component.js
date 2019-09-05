@@ -17,7 +17,7 @@ export default (wrapped) => {
     },
 
     update(props) {
-      update && update({...props, setState});
+      update && update({...props, state, setState});
     },
 
     render(props) {
