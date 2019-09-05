@@ -124,8 +124,10 @@ export default (wrapped) => {
   // state.currentScene && state.scenes[state.currentScene].init();
   state.currentScene = state.scenes.loading({gameState: state});
 
-  addEventListener('keydown', ev => { pressedKeys[keyMap[ev.which]] = true; } );
-  addEventListener('keyup', ev => { pressedKeys[keyMap[ev.which]] = false; delete pressedKeys[keyMap[ev.which]];  } );
+  // addEventListener('keydown', ev => { pressedKeys[keyMap[ev.which]] = true; } );
+  // addEventListener('keyup', ev => { pressedKeys[keyMap[ev.which]] = false; delete pressedKeys[keyMap[ev.which]];  } );
+  addEventListener('keydown', ev => { pressedKeys[ev.which] = true; } );
+  addEventListener('keyup', ev => { pressedKeys[ev.which] = false; delete pressedKeys[ev.which];  } );
   addEventListener('blur', () => pressedKeys = {});
 
   return {
