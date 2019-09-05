@@ -25,9 +25,9 @@ const game = compose(Game)({
     }),
   },
   assets: {
-    main: { type: 'song', data: mainSong },
-    audio: { type: 'audio', data: audio },
-    nyan: { type: 'song', data: nyan },
+    // main: { type: 'song', data: mainSong },
+    // audio: { type: 'audio', data: audio },
+    // nyan: { type: 'song', data: nyan },
     title: { type: 'dithered', data: title(document.getElementById('c').getContext('2d')) },
     background: { type: 'dithered', data: background(document.getElementById('c').getContext('2d')) },
     clouds: { type: 'dithered', data: clouds(document.getElementById('c').getContext('2d')) },
@@ -72,9 +72,8 @@ const game = compose(Game)({
     // } },
   },
   onready: ({setState, state}) => {
-    game.setScene('menu');
+    game.setScene('game');
   },
 });
 
-// console.log(game.state.assets.getAsset('background'));
 game.start();
