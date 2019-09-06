@@ -60,11 +60,17 @@ export default (original) => {
   
       x = ~~x;
       y = ~~y;
+
+      y > 260 && (y = 260);
+      // y < 240 && (y = 240);
+      x < 256 && (x = 256);
     },
 
     render(props) {
       const { context } = props;
       beforeCameraRender && beforeCameraRender(props);
+
+      context.t(`x: ${x} y: ${y}`, 0, 10, {stroke: 2, size: 2});
 
       context.sv();
       context.tr(-(x - camCenter), -(y - 240));
