@@ -1,12 +1,27 @@
-import compose from '../lib/compose';
-import Component from './component';
-
 export default (original) => {
-  const { state = {x: 0, y: 0, paused: false}, width, height, image, animations, update, render, onEnd = () => {console.log('from ss');}} = original;
-  let currentAnimation = 'twinkle', currentSpeed = 0, scale = 2, angle = 0, mirror = false;
+  const {
+    state = {
+      x: 0,
+      y: 0,
+      animation: 'idle',
+      paused: false
+    }, 
+    width, height, image, animations, update, render, onEnd = () => {console.log('from ss');}
+  } = original;
+  let currentAnimation = state.animation, currentSpeed = 0, scale = 2, angle = 0, mirror = false;
   let currentFrame = 0;
-  let timer = 0, delta = 0, stopped = false, visible = true;
+  let timer = 0, stopped = false, visible = true;
   let dir = 1;
+
+  function setDirection(newDir) {
+    mirror = newDir === -1;
+  };
+
+  function setAnimation(animation) {
+    currentAnimation = animation;
+    currentSpeed = animations[currentAnimation].speed;
+  };
+
 
   const transformed = {
     ...original,
@@ -20,19 +35,14 @@ export default (original) => {
     setScale(newScale) {
       scale = newScale;
     },
-    setAnimation(animation) {
-      currentAnimation = animation;
-      currentSpeed = animations[currentAnimation].speed;
-    },
+    setAnimation,
     setSpeed(speed) {
       currentSpeed = speed;
     },
     setRotation(newAngle) {
       angle = newAngle;
     },
-    setDirection(newDir) {
-      mirror = newDir === -1;
-    },
+    setDirection,
     play() {
       currentFrame = 0;
       timer = 0;
@@ -45,11 +55,10 @@ export default (original) => {
     },
   }
 
-  return compose(Component)({
+  return {
     ...transformed,
     update(props) {
-      update && update(props);
-      const { dt, setState } = props;
+      update && update({...props, setDirection, setAnimation});
 
       timer += 1;
 
@@ -65,11 +74,11 @@ export default (original) => {
         }
       }
 
-      if (currentFrame === 0) {
-        if (animations[currentAnimation].direction && animations[currentAnimation].direction === 'alternate') {
-          dir = 1;
-        }
-      }
+      currentFrame === 0 &&
+      animations[currentAnimation].direction &&
+      animations[currentAnimation].direction === 'alternate' && (
+        dir = 1
+      );
 
       !stopped && currentSpeed && timer % currentSpeed === 0 && (currentFrame += dir);
     },
@@ -95,5 +104,5 @@ export default (original) => {
       context.di(image, frame * width, 0, width, height, -width / 2, -height / 2, width, height);
       context.ro();
     },
-  });
+  };
 }
