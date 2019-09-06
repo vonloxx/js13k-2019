@@ -45,9 +45,53 @@ export default ({ gameState }) => {
     }
   })({image: assets.getAsset('sun')});
 
+  const bgScene = compose(Scene)({
+    state: {
+      speed: 10,
+      entities: [
+        // background,
+        // sun,
+        // clouds,
+      ],
+    },
+    // update(props) {
+    //   const { setTarget } = props;
+    //   setTarget(~~(hero.state.x / 2), ~~(hero.state.y / 2));
+    // },
+    update(props) {
+      background.update(props);
+      clouds.update(props);
+    },
+    render(props) {
+      const { context } = props;
+      let x = -~~hero.state.x;
+      let y = -~~hero.state.y;
+
+      y < -260 && (y = -260);
+      // y < 240 && (y = 240);
+      x > -256 && (x = -256);
+
+      context.t(`${x} ${y}`, 10, 30, {stroke: 2});
+      context.sv();
+      context.tr((x / 20), 20 + (y / 20));
+      background.render(props);
+      context.ro();
+
+      context.sv();
+      context.tr((x / 20), (y / 20));
+      sun.render(props);
+      context.ro();
+
+      context.sv();
+      context.tr((x / 5), (y / 5));
+      clouds.render(props);
+      context.ro();
+    }
+  });
+
   const hero = compose(Hero)({gameState});
-  hero.setAnimation('talk');
-  hero.setScale(4);
+  hero.setAnimation('idle');
+  hero.setScale(2);
   hero.play();
 
   return compose(Camera, Scene)({
@@ -62,31 +106,23 @@ export default ({ gameState }) => {
       timer++;
 
       setTarget(hero.state.x, hero.state.y);
-      // timer === 100 && setTarget(400, 200);
-      // timer === 200 && setTarget(200, 0);
-      // timer === 300 && setTarget(0, 400);
-      // timer === 400 && (
-      //   // setSpeed(50),
-      //   setState({ speed: 50 }),
-      //   setTarget(0, 0),
-      //   setShake(1000)
-      // );
-      // timer === 500 && setTarget(256, 240);
 
-      background.update(props);
-      clouds.update(props);
+      // background.update(props);
+      // clouds.update(props);
+      bgScene.update(props);
     },
 
     beforeCameraRender(props) {
-      background.render(props);
-      sun.render(props);
-      clouds.render(props);
+      bgScene.render(props);
+      // background.render(props);
+      // sun.render(props);
+      // clouds.render(props);
     },
 
     render(props) {
       const { context, state } = props;
       // background.render(props);
-      context.t(`Game ${timer} ${state.speed}`, 170, 140, {size: 4, fill: '#fff', stroke: 2});
+      context.t(`Game ${timer} ${state.speed}`, 170, 480, {size: 4, fill: '#fff', stroke: 2});
     }
   });
 }
