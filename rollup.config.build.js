@@ -3,6 +3,7 @@ import html from 'rollup-plugin-bundle-html';
 import image from 'rollup-plugin-img';
 import { string } from "rollup-plugin-string";
 import stripCode from "rollup-plugin-strip-code";
+import copy from 'rollup-plugin-copy';
 
 const options = {
   mangle: {
@@ -53,7 +54,15 @@ module.exports = [
       // sourcemap: 'inline',
     },
     treeshake: true,
-    plugins
+    plugins: [
+      ...plugins,
+      copy({
+        targets: [
+          { src: 'src/favicon.ico', dest: 'dist/release' },
+        ]
+      })
+  
+    ],
   },
   {
     input: 'src/lib/assets-loader.js',

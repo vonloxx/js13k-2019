@@ -12,6 +12,7 @@
   "devDependencies": {
     "rollup": "^1.12.3",
     "rollup-plugin-bundle-html": "^0.2.0",
+    "rollup-plugin-copy": "^3.1.0",
     "rollup-plugin-img": "^1.1.0",
     "rollup-plugin-livereload": "^1.0.0",
     "rollup-plugin-serve": "^1.0.1",
