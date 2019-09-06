@@ -64,14 +64,13 @@ export default (original) => {
 
     render(props) {
       const { context } = props;
-      // context.text(`${targetX} ${angle}`, 0, 0, {size: 2, fill: '#fff', stroke: 1});
       beforeCameraRender && beforeCameraRender(props);
 
-      context.save();
-      context.translate(-(x - camCenter), -(y - 240));
+      context.sv();
+      context.tr(-(x - camCenter), -(y - 240));
 
       render && render(props);
-      context.restore();
+      context.ro();
     }
   };
 }

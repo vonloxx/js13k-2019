@@ -14,7 +14,6 @@ export default (original) => {
       visible = newValue;
     },
     setPosition(newX, newY) {
-      // setPosition && setPosition(newX, newY);
       state.x = newX;
       state.y = newY;
     },
@@ -84,18 +83,17 @@ export default (original) => {
       }
 
       const frame = animations[currentAnimation].frames[currentFrame] - 1;
-      context.save();
-      context.translate(state.x, state.y);
+      context.sv();
+      context.tr(state.x, state.y);
       if (mirror) {
-        context.scale(-scale, scale);
+        context.sc(-scale, scale);
       } else {
-        context.scale(scale, scale);
+        context.sc(scale, scale);
       }
-      context.rotate((mirror?-angle:angle) * Math.PI / 180);
+      context.rt((mirror?-angle:angle) * Math.PI / 180);
   
-      context.drawImage(image, frame * width, 0, width, height, -width / 2, -height / 2, width, height);
-      context.restore();
-      // context.text(`${currentFrame} ${animations[currentAnimation].frames.length}`, 100, 100, {fill: '#fff'});
+      context.di(image, frame * width, 0, width, height, -width / 2, -height / 2, width, height);
+      context.ro();
     },
   });
 }

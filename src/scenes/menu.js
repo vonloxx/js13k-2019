@@ -9,11 +9,12 @@ export default ({ gameState }) => {
   let musicPlaying, canPlay = false;
   let timer = 0, angle = 0, dir = 1;
 
-  const song = assets.getAsset('nyan');
-  song.setAttribute('loop', true);
-  song.addEventListener('loadeddata', e => {
-    canPlay = true;
-  });
+  // const song = assets.getAsset('nyan');
+  // song.setAttribute('loop', true);
+  // song.addEventListener('loadeddata', e => {
+  //   canPlay = true;
+  // });
+  canPlay = true;
 
   // const spritesheet = assets.getAsset('spritesheet');
   // const hero = compose()({...assets.getAsset('spritesheet')});
@@ -27,7 +28,7 @@ export default ({ gameState }) => {
   const bg1 = compose(component, () => {
     return {
       render({ context }) {
-        context.rect(0, 0, 512, 480, {fill: '#000'});
+        context.r(0, 0, 512, 480, {fill: '#000'});
       }
     }
   })();
@@ -45,8 +46,8 @@ export default ({ gameState }) => {
         }
       },
       render({ context }) {
-        context.drawImage(image, 0, 0, 256, 240, -x, ~~y, 512, 480);
-        context.drawImage(image, 0, 0, 256, 240, -(-512 + x), ~~y, 512, 480);
+        context.di(image, 0, 0, 256, 240, -x, ~~y, 512, 480);
+        context.di(image, 0, 0, 256, 240, -(-512 + x), ~~y, 512, 480);
 
       }
     }
@@ -64,8 +65,8 @@ export default ({ gameState }) => {
         }
       },
       render({ context }) {
-        context.drawImage(image, 0, 0, 256, 240, -x, 0, 512, 480);
-        context.drawImage(image, 0, 0, 256, 240, -(-512 + x), 0, 512, 480);
+        context.di(image, 0, 0, 256, 240, -x, 0, 512, 480);
+        context.di(image, 0, 0, 256, 240, -(-512 + x), 0, 512, 480);
 
       }
     }
@@ -83,8 +84,8 @@ export default ({ gameState }) => {
         }
       },
       render({ context }) {
-        context.drawImage(image, 0, 0, 256, 240, -(~~x), 0, 512, 480);
-        context.drawImage(image, 0, 0, 256, 240, -(-512 + (~~x)), 0, 512, 480);
+        context.di(image, 0, 0, 256, 240, -(~~x), 0, 512, 480);
+        context.di(image, 0, 0, 256, 240, -(-512 + (~~x)), 0, 512, 480);
 
       }
     }
@@ -94,7 +95,7 @@ export default ({ gameState }) => {
     const { image } = original;
     return {
       render({ context }) {
-        context.drawImage(image, 0, 0, 256, 240, 0, 300, 512, 480);
+        context.di(image, 0, 0, 256, 240, 0, 300, 512, 480);
       }
     }
   })({image: assets.getAsset('sun')});
@@ -110,32 +111,33 @@ export default ({ gameState }) => {
       },
       render({ context }) {
         musicPlaying && (
-          context.text('Bring it', 14, 0, {fill:'#fff', size: 10, stroke: 5}),
-          context.text('Back', 4, 50, {fill:'#fff', size: 20, stroke: 10}),
-          context.drawImage(image, 0, 0, 256, 120, 14, 0, 512, 240)
+          context.t('Bring it', 14, 0, {fill:'#fff', size: 10, stroke: 5}),
+          context.t('Back', 4, 50, {fill:'#fff', size: 20, stroke: 10}),
+          context.di(image, 0, 0, 256, 120, 14, 0, 512, 240)
         );
 
         musicPlaying && timer2 > 100 && (
-          context.text('A game by Marco Fernandes', 14, 240, {fill:'#fff', size: 2, stroke: 2})
+          context.t('A game by Marco Fernandes', 14, 240, {fill:'#fff', size: 3, stroke: 3})
         )
 
         musicPlaying && timer2 > 150 && (
-          context.text('"Nyan cat" character by ????', 14, 260, {fill:'#fff', size: 2, stroke: 2}),
-          context.text('"Nyan cat" music by ????', 14, 280, {fill:'#fff', size: 2, stroke: 2})
+          context.t('Nyan Cat character by Christopher Torres', 14, 280, {fill:'#fff', size: 2, stroke: 2}),
+          context.t('Nyan Cat music by daniwell', 14, 300, {fill:'#fff', size: 2, stroke: 2})
         )
 
         musicPlaying && timer2 > 200 &&
         (timer2 % 100 > 0 && timer2 % 100 < 50) &&
          (
-          context.text('Press any key to start', 14, 320, {fill:'#fff', size: 3, stroke: 3})
+          context.t('Press any key to start', 14, 320, {fill:'#fff', size: 3, stroke: 3})
         )
 
-        context.save();
-        context.rotate(15 * Math.PI / 180);
         musicPlaying && timer2 > 50 && (
-          context.drawImage(image, 0, 120, 256, 120, 14, 140, 512, 240)
+          context.sv(),
+          context.tr(14, 140),
+          context.rt(15 * Math.PI / 180),
+          context.di(image, 0, 120, 256, 120, -128, -20, 512, 240),
+          context.ro()
         )
-        context.restore();
       }
     }
   })({image: assets.getAsset('title')});
@@ -199,7 +201,7 @@ export default ({ gameState }) => {
 
     update({dt, isKeyPressed}) {
       if (isKeyPressed() && !musicPlaying && canPlay) {
-        song.play();
+        // song.play();
         musicPlaying = true;
       }
 
@@ -223,7 +225,7 @@ export default ({ gameState }) => {
       const bg = gameState.assets.getAsset('background');
       !musicPlaying && 
       (timer % 100 > 0 && timer % 100 < 50) &&
-      context.text(`Press any key`, 60, 260, {size: 5, stroke: 5});
+      context.t(`Press any key`, 60, 260, {size: 5, stroke: 5});
       // musicPlaying && (
       //   context.text(`Bring it`, 60, 136, {size: 6, stroke: 6}),
       //   context.text(`back`, 54, 166, {size: 12, stroke: 6})

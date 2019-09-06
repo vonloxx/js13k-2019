@@ -27,7 +27,7 @@ export default ({ gameState }) => {
       }
 
       // context.text(`Loading`, 170, 140, {size: 4, fill: '#fff', stroke: 5});
-      context.text(`Loading`, 170 - (size * 20), 140 - (size * 3), {size: size + 4, fill: '#fff', stroke: 5});
+      context.t(`Loading`, 170 - (size * 20), 140 - (size * 3), {size: size + 4, fill: '#fff', stroke: 5});
     }
   });
 }

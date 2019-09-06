@@ -13,8 +13,8 @@ export default ({ gameState }) => {
     return {
       ...original,
       render({ context }) {
-        context.drawImage(image, 0, 0, 256, 240, 0, 0, 512, 480);
-        context.drawImage(image, 0, 0, 256, 240, 512, 0, 512, 480);
+        context.di(image, 0, 0, 256, 240, 0, 0, 512, 480);
+        context.di(image, 0, 0, 256, 240, 512, 0, 512, 480);
       }
     }
   })({
@@ -30,8 +30,8 @@ export default ({ gameState }) => {
         (x < -512 || x > 512) && (x = 0);
       },
       render({ context }) {
-        context.drawImage(image, 0, 0, 256, 240, ~~x, 0, 512, 480);
-        context.drawImage(image, 0, 0, 256, 240, 512 + ~~x, 0, 512, 480);
+        context.di(image, 0, 0, 256, 240, ~~x, 0, 512, 480);
+        context.di(image, 0, 0, 256, 240, 512 + ~~x, 0, 512, 480);
       }
     }
   })({image: assets.getAsset('clouds')});
@@ -40,7 +40,7 @@ export default ({ gameState }) => {
     const { image } = original;
     return {
       render({ context }) {
-        context.drawImage(image, 0, 0, 256, 240, 0, 295, 512, 480);
+        context.di(image, 0, 0, 256, 240, 0, 295, 512, 480);
       }
     }
   })({image: assets.getAsset('sun')});
@@ -86,7 +86,7 @@ export default ({ gameState }) => {
     render(props) {
       const { context, state } = props;
       // background.render(props);
-      context.text(`Game ${timer} ${state.speed}`, 170, 140, {size: 4, fill: '#fff', stroke: 2});
+      context.t(`Game ${timer} ${state.speed}`, 170, 140, {size: 4, fill: '#fff', stroke: 2});
     }
   });
 }

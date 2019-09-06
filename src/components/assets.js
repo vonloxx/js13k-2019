@@ -1,14 +1,14 @@
 import compose from '../lib/compose';
-import Song from './song';
+// import Song from './song';
 import Image from './image';
 import Spritesheet from './spritesheet';
-import Audio from './audio';
+// import Audio from './audio';
 
 export default data => {
   const processors = {
-    song: (data) => {
-      return compose(Song)(data);
-    },
+    // song: (data) => {
+    //   return compose(Song)(data);
+    // },
 
     spritesheet: (data) => {
       return compose(Spritesheet)(data);
@@ -18,9 +18,9 @@ export default data => {
       return compose(Image)(data);
     },
 
-    audio: data => {
-      return compose(Audio)(data);
-    },
+    // audio: data => {
+    //   return compose(Audio)(data);
+    // },
 
     dithered: data => {
       const { width, height, image_data} = data;

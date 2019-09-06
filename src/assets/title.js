@@ -16,10 +16,10 @@ export default (context) => {
   gradient.addColorStop(5 / 6, 'indigo');
   gradient.addColorStop(1, 'violet');
 
-  ctx.clear();
+  ctx.clr();
 
-  ctx.text(`Bring it`, 0, 0, {size: 5, fill: '#000'}),
-  ctx.text(`back`, -5, 25, {size: 10, fill: '#000'})
+  ctx.t(`Bring it`, 0, 0, {size: 5, fill: '#000'}),
+  ctx.t(`back`, -5, 25, {size: 10, fill: '#000'})
   // const imgData = context.getImageData(0, 0, 256, 240);
 
   context.globalCompositeOperation = 'source-in';
@@ -35,7 +35,7 @@ export default (context) => {
   context.fillStyle = '#fff';
   context.font = '30px sans-serif'
   context.fillText(`${String.fromCodePoint(0x1F3AE)}`, 20, 232);
-  ctx.text(`JS13K Edition`, 62, 214, {size: 2, fill: '#fff', stroke: 2})
+  ctx.t(`JS13K Edition`, 62, 214, {size: 2, fill: '#fff', stroke: 2})
 
   return {
     width: 256,

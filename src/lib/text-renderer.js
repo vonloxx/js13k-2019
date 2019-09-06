@@ -57,7 +57,7 @@ const font = {
 };
 
 export default {
-  fillText(context, x, y, text, scale = 1.0) {
+  t(context, x, y, text, scale = 1.0) {
     text = text.toUpperCase();
 
     [...text].map((chr, i) => {

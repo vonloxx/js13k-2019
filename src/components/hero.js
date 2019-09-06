@@ -54,7 +54,7 @@ export default (original) => {
     render(props) {
       render && render(props);
       const { context, state } = props;
-      context.text(`hero ${timer}`, state.x, 100, {size: 5});
+      context.t(`hero ${timer}`, state.x, 100, {size: 5});
     }
   });
 };

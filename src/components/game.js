@@ -59,14 +59,14 @@ export default (wrapped) => {
     // state.currentScene && state.scenes[state.currentScene].update({dt});
     state.currentScene && state.currentScene.update({dt, isKeyPressed});
 
-    context.clear();
-    context.save();
-    context.rect(0, 0, 512, 480, {fill: '#036'});
+    context.clr();
+    context.sv();
+    context.r(0, 0, 512, 480, {fill: '#036'});
 
     // state.currentScene && state.scenes[state.currentScene].render({context: state.renderer});
     state.currentScene && state.currentScene.render({context: state.renderer, gameState: state});
 
-    context.restore();
+    context.ro();
 
     /* start-test-code */
     stats.end();
@@ -112,7 +112,7 @@ export default (wrapped) => {
   /* start-test-code */
   stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
   document.body.appendChild( stats.dom );
-  /* start-test-code */
+  /* end-test-code */
 
   const assetsLoader = new Worker('./assets-loader.js');
   assetsLoader.onmessage = function(e) {

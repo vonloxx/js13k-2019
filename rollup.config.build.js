@@ -10,9 +10,19 @@ const options = {
     toplevel: true,
   },
   compress: {
-    passes: 2,
+    passes: 5,
+    unsafe: true,
+    pure_getters: true,
   },
-  nameCache: {},
+  ecma: 6, // specify one of: 5, 6, 7 or 8
+  // keep_classnames: false,
+  // keep_fnames: false,
+  // ie8: false,
+  // module: false,
+  // nameCache: null, // or specify a name cache object
+  // safari10: false,
+  // // toplevel: false,
+  // warnings: false,
 };
 
 const plugins = [
@@ -28,6 +38,10 @@ const plugins = [
   string({
     include: ['**/*.frag', '**/*.vert'],
   }),
+  stripCode({
+    start_comment: 'start-test-code',
+    end_comment: 'end-test-code'
+  }),
 ];
 
 module.exports = [
@@ -38,6 +52,7 @@ module.exports = [
       format: 'iife',
       // sourcemap: 'inline',
     },
+    treeshake: true,
     plugins
   },
   {
@@ -47,6 +62,7 @@ module.exports = [
       format: 'esm',
       // sourcemap: 'inline',
     },
+    treeshake: true,
     plugins: [
       terser(options),
       stripCode({

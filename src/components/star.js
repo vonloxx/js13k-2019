@@ -22,13 +22,13 @@ export default (wrapped) => {
 
     render(props) {
       const { context, state } = props;
-      context.save();
-      context.translate(state.x, state.y);
-      context.rotate(angle);
-      context.rect(-6, -2, 12, 4);
-      context.rect(-2, -6, 4, 12);
-      context.restore();
-      context.text(`star ${angle} ${timer}`, state.x, 100, {size: 5});
+      context.sv();
+      context.tr(state.x, state.y);
+      context.rt(angle);
+      context.r(-6, -2, 12, 4);
+      context.r(-2, -6, 4, 12);
+      context.ro();
+      context.t(`star ${angle} ${timer}`, state.x, 100, {size: 5});
     }
   });
 };
