@@ -4,6 +4,7 @@ import serve from 'rollup-plugin-serve'
 import livereload from 'rollup-plugin-livereload'
 import image from 'rollup-plugin-img';
 import { string } from "rollup-plugin-string";
+import copy from 'rollup-plugin-copy';
 
 const options = {
   mangle: {
@@ -46,7 +47,14 @@ module.exports = [
       format: 'iife',
       sourcemap: 'inline',
     },
-    plugins
+    plugins: [
+      ...plugins,
+      copy({
+        targets: [
+          { src: 'src/favicon.ico', dest: 'dist' },
+        ]
+      })
+    ],
   },
   {
     input: 'src/lib/assets-loader.js',
