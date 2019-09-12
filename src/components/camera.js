@@ -27,10 +27,14 @@ export default (original) => {
     moving = true;
   };
 
+  function getTarget() {
+    return { x: x + 256, y: y + 240 };
+  };
+
   return {
     ...original,
     update(props) {
-      update && update({...props, setShake, setTarget});
+      update && update({...props, setShake, setTarget, getTarget});
 
       const { speed } = state;
 
@@ -64,6 +68,7 @@ export default (original) => {
       y > 260 && (y = 260);
       // y < 240 && (y = 240);
       x < 256 && (x = 256);
+      x > 512 && (x = 512);
     },
 
     render(props) {

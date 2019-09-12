@@ -1,128 +1,116 @@
 import compose from '../lib/compose';
-import component from '../components/component';
+import Component from '../components/component';
 import Scene from '../components/scene';
 import Camera from '../components/camera';
-import Hero from '../components/hero';
+import Hero from '../entities/hero';
+import Floor from '../entities/floor';
+import Bubble from '../entities/bubble';
 
 export default ({ gameState }) => {
   const { assets } = gameState;
   let timer = 0;
+  let camX = 0, camY = 0;
+  let bubbleTimer = 0;
+  let heroFall = 0, heroDead = false;
 
-  const background = compose(component, (original) => {
-    const { image } = original;
-    return {
-      ...original,
-      render({ context }) {
-        context.di(image, 0, 0, 256, 240, 0, 0, 512, 480);
-        context.di(image, 0, 0, 256, 240, 512, 0, 512, 480);
-      }
-    }
-  })({
-    image: assets.getAsset('background'),
+  const hero = compose(Hero)({
+    gameState,
+    colliding(props){
+      const { burst } = props;
+      burst(props);
+      hero.state.yVel = -7;
+      heroFall = 0;
+    },
   });
 
-  const clouds = compose(component, (original) => {
-    const { image } = original;
-    let x = 0;
-    return {
-      update(props) {
-        x -= 1/4;
-        (x < -512 || x > 512) && (x = 0);
-      },
-      render({ context }) {
-        context.di(image, 0, 0, 256, 240, ~~x, 0, 512, 480);
-        context.di(image, 0, 0, 256, 240, 512 + ~~x, 0, 512, 480);
-      }
-    }
-  })({image: assets.getAsset('clouds')});
-
-  const sun = compose(component, (original) => {
-    const { image } = original;
-    return {
-      render({ context }) {
-        context.di(image, 0, 0, 256, 240, 0, 295, 512, 480);
-      }
-    }
-  })({image: assets.getAsset('sun')});
-
-  const bgScene = compose(Scene)({
-    state: {
-      speed: 10,
-      entities: [
-        // background,
-        // sun,
-        // clouds,
-      ],
-    },
-    // update(props) {
-    //   const { setTarget } = props;
-    //   setTarget(~~(hero.state.x / 2), ~~(hero.state.y / 2));
-    // },
-    update(props) {
-      background.update(props);
-      clouds.update(props);
-    },
-    render(props) {
-      const { context } = props;
-      let x = -~~hero.state.x;
-      let y = -~~hero.state.y;
-
-      y < -260 && (y = -260);
-      // y < 240 && (y = 240);
-      x > -256 && (x = -256);
-
-      context.t(`${x} ${y}`, 10, 30, {stroke: 2});
-      context.sv();
-      context.tr((x / 20), 20 + (y / 20));
-      background.render(props);
-      context.ro();
-
-      context.sv();
-      context.tr((x / 20), (y / 20));
-      sun.render(props);
-      context.ro();
-
-      context.sv();
-      context.tr((x / 5), (y / 5));
-      clouds.render(props);
-      context.ro();
-    }
-  });
-
-  const hero = compose(Hero)({gameState});
   hero.setAnimation('idle');
   hero.setScale(2);
-  hero.play();
+  hero.setState({ x: 384, y: 460 });
+  hero.playAnimation();
+
+  const floor = Floor({
+    image: assets.getAsset('spritesheet'),
+  });
+
+  function setBubble(getTarget) {
+    const bubble = compose(Bubble)({gameState, getTarget});
+    bubble.setAnimation('idle');
+    bubble.setScale(4);
+    // bubble.setState({ x: 384 - 20 + ~~(Math.random() * 40), y: 448-camY });
+    // bubble.setRotation(~~(timer / 2));
+    bubble.playAnimation();
+    return bubble;
+  }
+
+  // hero.state.colliders.push(bubble);
+
+  const camHud = compose(Component)({
+    render(props) {
+      const {context} = props;
+      context.t(`${camX} ${camY}`, 170, 480, {size: 4, fill: '#fff', stroke: 2});
+    }
+  });
 
   return compose(Camera, Scene)({
     state: {
       speed: 10,
       entities: [
+        floor,
         hero,
+        // bubble,
+        camHud,
       ],
     },
     update(props) {
-      const { dt, isKeyPressed, setState, setTarget, setShake } = props;
+      const { state, setState, setTarget, getTarget, setShake } = props;
       timer++;
 
       setTarget(hero.state.x, hero.state.y);
+      // bubble.setRotation(~~(timer / 2));
+      const target = getTarget();
+      camX = target.x;
+      camY = target.y;
+      bubbleTimer++;
+      ~~hero.state.yVel > 0 && heroFall++;
+      ~~hero.state.yVel <= 0 && (heroFall = 0);
+
+      if (bubbleTimer % 100 === 0 && state.entities.length < 10) {
+        const bubble = setBubble(getTarget);
+        state.entities.push(bubble);
+        hero.state.colliders.push(bubble);
+      }
+
+      if (heroFall > 120) {
+        heroDead = true;
+      }
 
       // background.update(props);
       // clouds.update(props);
-      bgScene.update(props);
+      // bgScene.update(props);
     },
 
     beforeCameraRender(props) {
-      bgScene.render(props);
+      // bgScene.render(props);
       // background.render(props);
       // sun.render(props);
       // clouds.render(props);
+      const { context, state } = props;
+      
+      timer < 10000 && (
+        context.t(`Jump to the bubbles to get`, 20, 180, {size: 3, fill: '#fff', stroke: 2}),
+        context.t(`back to`, 100, 200, {size: 6, fill: '#fff', stroke: 6}),
+        context.t(`the stars`, 80, 240, {size: 6, fill: '#fff', stroke: 6})
+      );
+
+      heroDead && context.t(`Game Over`, 170, 200, {size: 4, fill: '#fff', stroke: 2});
+      // context.t(`fall ${heroFall}`, 170, 200, {size: 4, fill: '#fff', stroke: 2});
     },
 
     render(props) {
       const { context, state } = props;
+      // console.log(state);
       // background.render(props);
-      context.t(`Game ${timer} ${state.speed}`, 170, 480, {size: 4, fill: '#fff', stroke: 2});
+      context.t(`${camX} ${camY}`, camX, camY, {size: 4, fill: '#fff', stroke: 2});
     }
   });
 }

@@ -22,6 +22,13 @@ export default (original) => {
     currentSpeed = animations[currentAnimation].speed;
   };
 
+  function playAnimation() {
+    currentFrame = 0;
+    timer = 0;
+    transformed.setVisible(true);
+    stopped = false;
+    dir = 1;
+  };
 
   const transformed = {
     ...original,
@@ -43,13 +50,7 @@ export default (original) => {
       angle = newAngle;
     },
     setDirection,
-    play() {
-      currentFrame = 0;
-      timer = 0;
-      transformed.setVisible(true);
-      stopped = false;
-      dir = 1;
-    },
+    playAnimation,
     stop() {
       stopped = true;
     },
@@ -58,7 +59,7 @@ export default (original) => {
   return {
     ...transformed,
     update(props) {
-      update && update({...props, setDirection, setAnimation});
+      update && update({...props, setDirection, setAnimation, playAnimation});
 
       timer += 1;
 
@@ -93,7 +94,7 @@ export default (original) => {
 
       const frame = animations[currentAnimation].frames[currentFrame] - 1;
       context.sv();
-      context.tr(state.x, state.y);
+      context.tr(state.x + width, state.y + height);
       if (mirror) {
         context.sc(-scale, scale);
       } else {
@@ -101,8 +102,11 @@ export default (original) => {
       }
       context.rt((mirror?-angle:angle) * Math.PI / 180);
   
+      // context.tr(width / 2, -height / 2);
       context.di(image, frame * width, 0, width, height, -width / 2, -height / 2, width, height);
       context.ro();
+
+      // context.r(state.x, state.y, 32, 32, {fill: '#fff'});
     },
   };
 }
