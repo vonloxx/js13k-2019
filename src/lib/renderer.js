@@ -14,18 +14,20 @@ export default ({context}) => {
 
     // text
     t(text, x, y, style) {
-      if (style.stroke) {
-        context.fillStyle = '#000';
-        textRenderer.t(context, x - style.stroke, y - style.stroke, text, style.size || 3.0);
-        textRenderer.t(context, x, y - style.stroke, text, style.size || 3.0);
-        textRenderer.t(context, x + style.stroke, y - style.stroke, text, style.size || 3.0);
-        textRenderer.t(context, x - style.stroke, y, text, style.size || 3.0);
-        textRenderer.t(context, x, y, text, style.size || 3.0);
-        textRenderer.t(context, x + style.stroke, y, text, style.size || 3.0);
-        textRenderer.t(context, x - style.stroke, y + style.stroke, text, style.size || 3.0);
-        textRenderer.t(context, x, y + style.stroke, text, style.size || 3.0);
-        textRenderer.t(context, x + style.stroke, y + style.stroke, text, style.size || 3.0);        
-      }
+      // if (style.stroke) {
+      //   context.fillStyle = '#000';
+      //   textRenderer.t(context, x - style.stroke, y - style.stroke, text, style.size || 3.0);
+      //   textRenderer.t(context, x, y - style.stroke, text, style.size || 3.0);
+      //   textRenderer.t(context, x + style.stroke, y - style.stroke, text, style.size || 3.0);
+      //   textRenderer.t(context, x - style.stroke, y, text, style.size || 3.0);
+      //   textRenderer.t(context, x, y, text, style.size || 3.0);
+      //   textRenderer.t(context, x + style.stroke, y, text, style.size || 3.0);
+      //   textRenderer.t(context, x - style.stroke, y + style.stroke, text, style.size || 3.0);
+      //   textRenderer.t(context, x, y + style.stroke, text, style.size || 3.0);
+      //   textRenderer.t(context, x + style.stroke, y + style.stroke, text, style.size || 3.0);
+      // }
+      context.fillStyle = '#000';
+      textRenderer.t(context, x, y + style.stroke || 3, text, style.size || 3.0);
       context.fillStyle = style.fill || '#f0f0f0';
       textRenderer.t(context, x, y, text, style.size || 3.0);
     },

@@ -7,6 +7,7 @@ import Component from './components/component';
 import loadingScene from './scenes/loading';
 // import menuScene from './scenes/menu';
 import gameScene from './scenes/game';
+import gameOverScene from './scenes/game-over';
 
 // import mainSong from './assets/mainsong';
 // import nyan from './assets/nyan';
@@ -20,73 +21,30 @@ import title from './assets/title';
 
 const ctx = c.getContext('2d');
 
-const part = {
-  states: {
-    idle: {
-      x: 0,
-      y: 0,
-      angle: 0,
-      speed: 0.5,
-      animation: 'once',
-    },
-    walking: {
-      
-    },
-
-  }
-};
-
-const test = compose(Component)({
-  state: {
-    x: 100,
-    y: 100,
-    angle: 45,
-    dir: 1,
-    speed: 0.5,
-  },
-  update(props) {
-    const { state } = props;
-    state.angle === 45 && (state.dir = -1);
-    state.angle === -45 && (state.dir = 1);
-    state.angle += state.dir * state.speed;
-  },
-  render(props) {
-    const { context, state } = props;
-    context.sv();
-    context.tr(state.x, state.y);
-    context.sc(1, 1);
-    context.rt(state.angle * Math.PI / 180);
-    context.r(-5, 0, 10, 20);
-    context.r(-4, 19, 8, 3);
-    context.ro();
-    // context.t(`Test entity`, 10, 10, {stroke: 2});
-  }
-});
-
-const testScene = ({gameState}) => {
-  return compose(Scene)({
-    state: {
-      entities: [ test ],
-    },
-    render(props) {
-      const { context } = props;
-      context.t(`Test scene`, 10, 30, {stroke: 2});  
-    },
-  })
-};
-
 const game = compose(Game)({
   state: {
     scenes: {
       loading: loadingScene,
-      // menu: menuScene,
       game: gameScene,
-      // test: testScene,
+      gameOver: gameOverScene,
     },
-    // currentScene: loadingScene(),
     renderer: renderer({
       context: ctx,
     }),
+    gameOver(){
+      game.state.maxHeight < game.state.height && (game.state.maxHeight = game.state.height);
+      game.state.highScore < game.state.score && (game.state.highScore = game.state.score);
+      game.setScene('gameOver');
+    },
+    startGame(){
+      game.state.score = 0;
+      game.setScene('game');
+    },
+    score: 0,
+    highScore: 0,
+    height: 0,
+    maxHeight: 0,
+    currentHeight: 0,
   },
   assets: {
     // main: { type: 'song', data: mainSong },
@@ -98,42 +56,6 @@ const game = compose(Game)({
     sun: { type: 'dithered', data: sun(ctx) },
     backgroundMontains: { type: 'dithered', data: backgroundMontains(ctx) },
     spritesheet: { type: 'image', data: spritesheetImage },
-    // spritesheet: { type: 'spritesheet', data: {
-    //   width: 16,
-    //   height: 16,
-    //   imageData: spritesheetImage,
-    //   animations: {
-    //     idle: {
-    //       frames: [1],
-    //     },
-    //     walk: {
-    //       frames: [1, 2, 3, 4, 5],
-    //       speed: 5,
-    //       direction: 'alternate',
-    //     },
-    //     falling: {
-    //       frames: [6],
-    //     },
-    //     ground: {
-    //       frames: [7],
-    //     },
-    //     wall: {
-    //       frames: [8],
-    //     },
-    //     pipe: {
-    //       frames: [9],
-    //     },
-    //     snake: {
-    //       frames: [10, 11],
-    //       speed: 20,
-    //     },
-    //     star: {
-    //       frames: [12, 13, 14, 15, 16],
-    //       speed: 15,
-    //       direction: 'once',
-    //     },
-    //   }
-    // } },
   },
   onready: ({setState, state}) => {
     game.setScene('game');

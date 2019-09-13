@@ -4,15 +4,17 @@ import Controller from "../components/controller";
 import Spritesheet from "../components/spritesheet";
 import Movable from "../components/movable";
 import Jumpable from "../components/jumpable";
+import Zzfx from '../lib/zzfx';
 
 export default (original) => {
   const { gameState, update, render, colliding } = original;
   const { assets } = gameState;
+  let zzfx = new Zzfx();
   let timer = 0;
 
   return compose(
-    Component, 
-    Spritesheet, 
+    Component,
+    Spritesheet,
     (original) => {
       const { update } = original;
       return {
@@ -25,22 +27,22 @@ export default (original) => {
             y: 480 - 32,
             yVel: 0,
             isJumping: false,
-          }));    
+          }));
 
           state.x < 0 && (setState({
             x: 0,
             xVel: 0,
-          }));    
+          }));
 
           state.x > 768 - 32 && (setState({
             x: 768 -32,
             xVel: 0,
-          }));    
+          }));
         }
       }
     },
-    Jumpable, 
-    Movable, 
+    Jumpable,
+    Movable,
     Controller
   )({
     state: {
@@ -96,7 +98,7 @@ export default (original) => {
       setAnimation('idle');
       isPressed('left') && (decXVel(), setDirection(-1), setAnimation('walk'));
       isPressed('right') && (incXVel(), setDirection(1), setAnimation('walk'));
-      isPressed('jump') && !state.isJumping && (jump(), setAnimation('jump'));
+      isPressed('jump') && !state.isJumping && (zzfx.z(28209), jump(), setAnimation('jump'));
       state.isJumping && setAnimation('jump');
       ~~state.yVel > 1 && setAnimation('fall');
 
@@ -105,7 +107,7 @@ export default (original) => {
         const x2 = state.x + state.bbox.x + state.bbox.w;
         const x3 = entity.state.x + entity.state.bbox.x;
         const x4 = entity.state.x + entity.state.bbox.x + entity.state.bbox.w;
-        
+
         const y1 = state.y + state.bbox.y;
         const y2 = state.y + state.bbox.y + state.bbox.h;
         const y3 = entity.state.y + entity.state.bbox.y;
@@ -131,7 +133,7 @@ export default (original) => {
     render(props) {
       render && render(props);
       const { context, state } = props;
-      // context.t(`j ${state.isJumping} ${state.y}`, state.x - 100, state.y + 20, {size: 2, stroke: 2});
+      // context.t(`hero ${state.y}`, state.x - 100, state.y + 20, {size: 2, stroke: 2});
     }
   });
 };

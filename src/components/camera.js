@@ -47,12 +47,12 @@ export default (original) => {
       if (shake > shakeDuration) {
         shake = 0;
       }
-  
+
       const distanceX = targetX - x;
       const distanceY = targetY - y;
       const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
       angle = Math.atan2(distanceY,distanceX) * (180/Math.PI);
-  
+
       if (moving) {
         if (distance > 20) {
           x += distanceX / speed;
@@ -61,7 +61,7 @@ export default (original) => {
           moving = false;
         }
       }
-  
+
       x = ~~x;
       y = ~~y;
 
@@ -75,7 +75,7 @@ export default (original) => {
       const { context } = props;
       beforeCameraRender && beforeCameraRender(props);
 
-      context.t(`x: ${x} y: ${y}`, 0, 10, {stroke: 2, size: 2});
+      // context.t(`x: ${x} y: ${y}`, 0, 10, {stroke: 2, size: 2});
 
       context.sv();
       context.tr(-(x - camCenter), -(y - 240));

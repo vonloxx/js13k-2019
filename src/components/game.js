@@ -31,22 +31,22 @@ export default (wrapped) => {
     accumulator = 0,
     lastTimestamp = 0,
     pressedKeys = {};
-  
+
   function setState(props) {
     Object.entries(props).forEach(entry => {
       state[entry[0]] = entry[1];
     });
   };
-  
+
   function loop(timestamp) {
     const dt = timestamp - lastTimestamp;
-    const context = state.renderer; 
+    const context = state.renderer;
     lastTimestamp = timestamp;
 
-    if (dt > 1000) {
-      return;
-    }
-  
+    // if (dt > 1000) {
+    //   return;
+    // }
+
     accumulator += dt;
 
     while (accumulator >= delta) {
@@ -85,7 +85,7 @@ export default (wrapped) => {
       39: 'right',
       40: 'down',
     };
-  
+
     // alpha keys
     for (let i = 0; i < 26; i++) {
       keyMap[65+i] = (10 + i).toString(36);
@@ -101,7 +101,7 @@ export default (wrapped) => {
 
   function isKeyPressed(key) {
     if (key) {
-      return !!pressedKeys[key];      
+      return !!pressedKeys[key];
     }
 
     if (Object.entries(pressedKeys).length > 0) {
@@ -114,7 +114,7 @@ export default (wrapped) => {
   document.body.appendChild( stats.dom );
   /* end-test-code */
 
-  const assetsLoader = new Worker('./assets-loader.js');
+  const assetsLoader = new Worker('assets-loader.js');
   assetsLoader.onmessage = function(e) {
     state.assets = Assets(e.data);
     onready({state, setState});

@@ -17,12 +17,12 @@ export default (original) => {
   }
 
   function setX() {
-    return 384 - 200 + ~~(Math.random() * 400);
+    return 384 - 150 + ~~(Math.random() * 300);
   }
 
   return compose(
-    Component, 
-    Spritesheet, 
+    Component,
+    Spritesheet,
     (original) => {
       const { update } = original;
       return {
@@ -43,16 +43,16 @@ export default (original) => {
           state.x < 0 && (setState({
             x: 0,
             xVel: 0,
-          }));    
+          }));
 
           state.x > 768 - 32 && (setState({
             x: 768 -32,
             xVel: 0,
-          }));    
+          }));
         }
       }
     },
-    Movable, 
+    Movable
   )({
     state: {
       x: setX(),
@@ -62,10 +62,10 @@ export default (original) => {
       speed: 0.2,
       maxSpeed: 5,
       friction: 1,
-      gravity: 1,
+      gravity: 1.5,
       animation: 'idle',
       bbox: {
-        x: 0, y: 0, w: 64, h: 64,
+        x: 0, y: 0, w: 32, h: 32,
       },
       bursting: false,
     },
@@ -96,7 +96,7 @@ export default (original) => {
         setAnimation('idle');
         state.y = getTarget().y - 480;
         state.x = setX();
-        playAnimation();  
+        playAnimation();
       // }, 200);
       // console.log('anim ended', props);
     },

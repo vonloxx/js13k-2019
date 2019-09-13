@@ -1,34 +1,53 @@
 import compose from "../lib/compose";
-// import Component from "./component";
-import Spritesheet from "./spritesheet";
+import Component from "../components/component";
+import Spritesheet from "../components/spritesheet";
+import Movable from "../components/movable";
 
-export default (wrapped) => {
-  // const { update, render, setState} = wrapped;
-  let timer = 0, angle = 0;
+export default (original) => {
+  const { gameState, update, render } = original;
+  const { assets } = gameState;
+  let timer = 0;
 
-  return compose(Spritesheet)({
-    state: {
-      x: 0,
-      y: 0,
-    },
-    ...wrapped,
-    update(props) {
-      const { setState } = props;
-
-      timer++;
-      angle = (timer * Math.PI / 180);
-      // setState({x: ~~(100 + Math.sin(timer/100) * 100)});
-    },
-
-    render(props) {
-      const { context, state } = props;
-      context.sv();
-      context.tr(state.x, state.y);
-      context.rt(angle);
-      context.r(-6, -2, 12, 4);
-      context.r(-2, -6, 4, 12);
-      context.ro();
-      context.t(`star ${angle} ${timer}`, state.x, 100, {size: 5});
+  return compose(
+    Component,
+    Spritesheet,
+    (original) => {
+      const { update } = original;
+      return {
+        ...original,
+      }
     }
+  )({
+    state: {
+      x: 30,
+      y: 30,
+      animation: 'twinkle',
+    },
+    width: 16,
+    height: 16,
+    image: assets.getAsset('spritesheet'),
+    animations: {
+      twinkle: {
+        frames: [12, 13, 14, 15, 16],
+        speed: 5,
+        direction: 'once',
+      },
+    },
+    onEnd(props){
+      const { state, setAnimation, playAnimation, setVisible } = props;
+      state.x = Math.random() * 768;
+      setVisible(false);
+      setTimeout(() => {
+        setVisible(true);
+        playAnimation();
+      }, Math.random() * 1000);
+    },
+    ...original,
+
+    // render(props) {
+    //   render && render(props);
+    //   const { context, state } = props;
+    //   // context.t(`j ${state.isJumping} ${state.y}`, state.x - 100, state.y + 20, {size: 2, stroke: 2});
+    // }
   });
 };

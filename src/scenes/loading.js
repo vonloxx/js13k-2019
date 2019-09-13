@@ -2,32 +2,20 @@ import compose from '../lib/compose';
 import Scene from '../components/scene';
 
 export default ({ gameState }) => {
-  let
-    timer = 0,
-    size = 0;
-
+  let timer = 0;
   return compose(Scene)({
-    update({dt}) {
-      timer += 5;
+    update(prop) {
+      timer++;
     },
-
     render({context}) {
-      if (timer === 50) {
-        size = 0;
-      }
-      if (timer === 100) {
-        size = 1;
-      }
-      if (timer === 150) {
-        size = 2;
-      }
-      if (timer === 200) {
-        size = 1;
-        timer = 0;
-      }
+      context.t(`Loading`, 172, 140, {size: 4, fill: '#fff', stroke: 5});
 
-      // context.text(`Loading`, 170, 140, {size: 4, fill: '#fff', stroke: 5});
-      context.t(`Loading`, 170 - (size * 20), 140 - (size * 3), {size: size + 4, fill: '#fff', stroke: 5});
+      context.sv();
+      context.tr(256, 240);
+      context.rt(timer / 50);
+      context.t('#', -30, -30, { size: 10, stroke: 0});
+      context.ro();
+
     }
   });
 }
