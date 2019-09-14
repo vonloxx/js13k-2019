@@ -40,10 +40,10 @@ export default (wrapped) => {
 
   function loop(timestamp) {
     const dt = timestamp - lastTimestamp;
-    const context = state.renderer;
     lastTimestamp = timestamp;
 
     // if (dt > 1000) {
+    //   loop(timestamp);
     //   return;
     // }
 
@@ -56,14 +56,14 @@ export default (wrapped) => {
     stats.begin();
     /* end-test-code */
 
-    // state.currentScene && state.scenes[state.currentScene].update({dt});
+    const context = state.renderer;
+
     state.currentScene && state.currentScene.update({dt, isKeyPressed});
 
     context.clr();
     context.sv();
     context.r(0, 0, 512, 480, {fill: '#036'});
 
-    // state.currentScene && state.scenes[state.currentScene].render({context: state.renderer});
     state.currentScene && state.currentScene.render({context: state.renderer, gameState: state});
 
     context.ro();
@@ -129,6 +129,26 @@ export default (wrapped) => {
   addEventListener('keydown', ev => { pressedKeys[ev.which] = true; } );
   addEventListener('keyup', ev => { pressedKeys[ev.which] = false; delete pressedKeys[ev.which];  } );
   addEventListener('blur', () => pressedKeys = {});
+
+  // addEventListener("touchstart", handleTouchStart, false);
+  // addEventListener("touchend", handleTouchEnd, false);
+  // addEventListener("touchcancel", handleTouchCancel, false);
+  function handleTouchMove(ev) {
+    ev.preventDefault();
+    console.log(ev);
+  }
+
+  function handleTouchStart(ev) {
+    ev.preventDefault();
+    console.log(ev);
+  }
+
+  document.body.onload = () => {
+    c.addEventListener("touchstart", handleTouchStart, false);
+    c.addEventListener("touchmove", handleTouchMove, false);
+    addEventListener("mousemove", handleTouchMove, false);
+    console.log('attach');
+  };
 
   return {
     ...wrapped,

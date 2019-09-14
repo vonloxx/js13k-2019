@@ -6,6 +6,7 @@ import Hero from '../entities/hero';
 import Floor from '../entities/floor';
 import Bubble from '../entities/bubble';
 import Background from '../scenes/background';
+import NyanCat from '../entities/nyan-cat';
 import Zzfx from '../lib/zzfx';
 
 export default ({ gameState }) => {
@@ -56,11 +57,13 @@ export default ({ gameState }) => {
     return bubble;
   }
 
-  const camHud = compose(Component)({
-    render(props) {
-      const {context} = props;
-    }
-  });
+  const nyanCat = NyanCat({gameState});
+
+  // const camHud = compose(Component)({
+  //   render(props) {
+  //     const {context} = props;
+  //   }
+  // });
 
   return compose(Camera, Scene)({
     state: {
@@ -68,7 +71,8 @@ export default ({ gameState }) => {
       entities: [
         floor,
         hero,
-        camHud,
+        // nyanCat,
+        // camHud,
       ],
     },
     update(props) {

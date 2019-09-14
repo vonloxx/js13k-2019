@@ -30,7 +30,7 @@ const plugins = [
   terser(options),
   html({
     template: 'src/index.html',
-    dest: "dist/release",
+    dest: "docs",
     inject: 'body',
   }),
   image({
@@ -49,7 +49,7 @@ module.exports = [
   {
     input: 'src/index.js',
     output: {
-      file: 'dist/release/bundle.js',
+      file: 'docs/bundle.js',
       format: 'iife',
       // sourcemap: 'inline',
     },
@@ -58,7 +58,7 @@ module.exports = [
       ...plugins,
       copy({
         targets: [
-          { src: 'src/favicon.ico', dest: 'dist/release' },
+          { src: 'src/favicon.ico', dest: 'docs' },
         ]
       })
   
@@ -67,7 +67,7 @@ module.exports = [
   {
     input: 'src/lib/assets-loader.js',
     output: {
-      file: 'dist/release/assets-loader.js',
+      file: 'docs/assets-loader.js',
       format: 'esm',
       // sourcemap: 'inline',
     },
