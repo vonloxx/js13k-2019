@@ -1,7 +1,7 @@
 import compose from '../lib/compose';
 import component from '../components/component';
 import Scene from '../components/scene';
-import Star from '../components/star';
+import Star from '../entities/star';
 
 export default ({ gameState }) => {
   const { assets } = gameState;
