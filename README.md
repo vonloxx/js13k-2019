@@ -3,7 +3,7 @@
 This is my 2nd time participating in [JS13k games](https://js13kgames.com/) competition although I've made many attemps along the years.
 
 ### TL;DR
-[You can play the game here](http://js13kgames.com/entries/back-to-the-stars).
+[You can play the game here](https://vonloxx.github.io/js13k-2019/).
 
 Again, this year I didn't have too much time but I guess 95% of participants complain about the same thing. And, actually, although I kind of prepared a simple framework before, the game was basically done in 2 nights (~10h) just before the September 13th deadline.
 
