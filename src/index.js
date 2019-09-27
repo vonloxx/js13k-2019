@@ -5,8 +5,10 @@ import Game from './components/game';
 import loadingScene from './scenes/loading';
 import gameScene from './scenes/game';
 import gameOverScene from './scenes/game-over';
+import nyanCatScene from './scenes/nyan-cat';
 
 import spritesheetImage from './assets/spritesheet.png';
+import zyxplayLogo from './assets/zyxplay.png';
 import background from './assets/background';
 import clouds from './assets/clouds';
 import sun from './assets/sun';
@@ -19,6 +21,7 @@ const game = compose(Game)({
       loading: loadingScene,
       game: gameScene,
       gameOver: gameOverScene,
+      nyanCat: nyanCatScene
     },
     renderer: renderer({
       context: ctx,
@@ -43,6 +46,7 @@ const game = compose(Game)({
     clouds: { type: 'dithered', data: clouds(ctx) },
     sun: { type: 'dithered', data: sun(ctx) },
     spritesheet: { type: 'image', data: spritesheetImage },
+    zyxplay: { type: 'image', data: zyxplayLogo },
   },
   onready: ({setState, state}) => {
     game.setScene('game');

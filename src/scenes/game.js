@@ -6,7 +6,6 @@ import Hero from '../entities/hero';
 import Floor from '../entities/floor';
 import Bubble from '../entities/bubble';
 import Background from '../scenes/background';
-import NyanCat from '../entities/nyan-cat';
 import Zzfx from '../lib/zzfx';
 
 export default ({ gameState }) => {
@@ -47,6 +46,8 @@ export default ({ gameState }) => {
     image: assets.getAsset('spritesheet'),
   });
 
+  const zyxLogo = assets.getAsset('zyxplay');
+
   function setBubble(getTarget) {
     const bubble = compose(Bubble)({gameState, getTarget});
     bubble.setAnimation('idle');
@@ -56,8 +57,6 @@ export default ({ gameState }) => {
     bubble.playAnimation();
     return bubble;
   }
-
-  const nyanCat = NyanCat({gameState});
 
   // const camHud = compose(Component)({
   //   render(props) {
@@ -71,7 +70,6 @@ export default ({ gameState }) => {
       entities: [
         floor,
         hero,
-        // nyanCat,
         // camHud,
       ],
     },
@@ -80,7 +78,6 @@ export default ({ gameState }) => {
       timer++;
 
       setTarget(hero.state.x, hero.state.y);
-      // bubble.setRotation(~~(timer / 2));
       const target = getTarget();
       camX = target.x;
       camY = target.y;
@@ -146,6 +143,8 @@ export default ({ gameState }) => {
 
       // context.t(`Height ${gameState.height}`, 10, 10, {size: 2, fill: '#fff', stroke: 2});
       context.t(`Score ${gameState.score}`, 10, 10, {size: 2, fill: '#fff', stroke: 2});
+
+      context.di(zyxLogo, 0, 0, 51, 25, 405, 10, 102, 50);
 
       // heroDead && context.t(`Game Over`, 170, 200, {size: 4, fill: '#fff', stroke: 2});
       // context.t(`fall ${heroFall} ${firstBubble}`, 170, 200, {size: 4, fill: '#fff', stroke: 2});

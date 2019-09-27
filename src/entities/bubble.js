@@ -79,12 +79,12 @@ export default (original) => {
     image: assets.getAsset('spritesheet'),
     animations: {
       idle: {
-        frames: [19, 20],
+        frames: [21, 22],
         speed: 10,
         direction: 'alternate',
       },
       burst: {
-        frames: [19, 21, 22, 23, 24, 25, 26],
+        frames: [22, 23, 24, 25, 26, 27, 28],
         speed: 3,
         direction: 'once',
       },

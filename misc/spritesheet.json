@@ -214,6 +214,22 @@
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
     "sourceSize": { "w": 16, "h": 16 },
     "duration": 100
+   },
+   "spritesheet 27.aseprite": {
+    "frame": { "x": 432, "y": 0, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   "spritesheet 28.aseprite": {
+    "frame": { "x": 448, "y": 0, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
    }
  },
  "meta": {
@@ -221,7 +237,7 @@
   "version": "1.2.9",
   "image": "/Users/marcofernandes/Development/digimagina/js13k/js13k-2019/src/assets/spritesheet.png",
   "format": "I8",
-  "size": { "w": 432, "h": 16 },
+  "size": { "w": 464, "h": 16 },
   "scale": "1",
   "frameTags": [
   ],
